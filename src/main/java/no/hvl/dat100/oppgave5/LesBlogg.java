@@ -20,9 +20,40 @@ public class LesBlogg {
 	private static String TEKST = "TEKST";
 	private static String BILDE = "BILDE";
 
-	public static Blogg les(String mappe, String filnavn) {
 
-		throw new UnsupportedOperationException(TODO.method());
+public static Blogg les(String mappe, String filnavn) {
+    Blogg samling = null;
+    try {
+        BufferedReader leser = new BufferedReader(new FileReader(mappe + filnavn));
+        int antallInnlegg = Integer.parseInt(leser.readLine());
+        samling = new Blogg(antallInnlegg);
+
+        for (int i = 0; i < antallInnlegg; i++) {
+            String type = leser.readLine();
+            int id = Integer.parseInt(leser.readLine());
+            String bruker = leser.readLine();
+            String dato = leser.readLine();
+            int likes = Integer.parseInt(leser.readLine());
+
+            if (type.equals(TEKST)) {
+                String tekst = leser.readLine();
+                Tekst innlegg = new Tekst(id, bruker, dato, likes, tekst);
+                samling.leggTil(innlegg);
+            } else if (type.equals(BILDE)) {
+                String tekst = leser.readLine();
+                String url = leser.readLine();
+                Bilde innlegg = new Bilde(id, bruker, dato, likes, tekst, url);
+                samling.leggTil(innlegg);
+            }
+        }
+        leser.close();
+    } catch (IOException e) {
+        System.out.println("Feil ved lesing av fil: " + e.getMessage());
+    }
+    return samling;
+}
+
+
+		
 
 	}
-}
